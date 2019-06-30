@@ -6,7 +6,7 @@ import java.util.*
 /**
  * Created by nkazakova on 2019-06-30.
  */
-class User(
+data class User(
     val id: String,
     var firstName: String?,
     var lastName: String?,
@@ -27,20 +27,6 @@ class User(
         id = id,
         firstName = "John",
         lastName = "Doe $id"
-    )
-
-    fun printMe(): Unit = println(
-        """
-        id: $id
-        firstName: $firstName
-        lastName: $lastName
-        avatar: $avatar
-        rating: $rating
-        respect: $respect
-        lastVisit: $lastVisit
-        isOnline: $isOnline
-        ${"\n"}
-    """.trimIndent()
     )
 
     companion object Factory {
