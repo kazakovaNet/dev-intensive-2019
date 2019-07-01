@@ -17,4 +17,75 @@ object Utils {
             }
         }
     }
+
+    fun transliteration(payload: String, divider: String = " "): String {
+        val transMap = mapOf(
+            "а" to "a",
+            "б" to "b",
+            "в" to "v",
+            "г" to "g",
+            "д" to "d",
+            "е" to "e",
+            "ё" to "e",
+            "ж" to "zh",
+            "з" to "z",
+            "и" to "i",
+            "й" to "i",
+            "к" to "k",
+            "л" to "l",
+            "м" to "m",
+            "н" to "n",
+            "о" to "o",
+            "п" to "p",
+            "р" to "r",
+            "с" to "s",
+            "т" to "t",
+            "у" to "u",
+            "ф" to "f",
+            "х" to "h",
+            "ц" to "c",
+            "ч" to "ch",
+            "ш" to "sh",
+            "щ" to "sh'",
+            "ъ" to "",
+            "ы" to "i",
+            "ь" to "",
+            "э" to "e",
+            "ю" to "yu",
+            "я" to "ya"
+        )
+
+        val result = StringBuilder()
+        for (char in payload) {
+            val s = "$char"
+
+            if (s == " ") {
+                result.append(divider)
+                continue
+            }
+
+            val sToLowerCase = s.toLowerCase()
+
+            if (sToLowerCase in "a".."z") {
+                result.append(s) // английские символы переносятся как есть
+                continue
+            }
+
+            if (transMap[sToLowerCase] != null && transMap[s] == null) { // сохранять заглавные буквы
+                result.append(transMap[sToLowerCase]?.get(0)?.toUpperCase())
+
+                if (transMap[sToLowerCase]?.length == 2) { // второй символ в транслитерации делать прописным
+                    result.append(transMap[sToLowerCase]?.get(1))
+                }
+            } else {
+                result.append(transMap[sToLowerCase])
+            }
+        }
+
+        return result.toString()
+    }
+
+    fun initials(firstName: String?, lastName: String?): String? {
+        return ""
+    }
 }
