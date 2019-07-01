@@ -86,6 +86,23 @@ object Utils {
     }
 
     fun initials(firstName: String?, lastName: String?): String? {
-        return ""
+        val result = StringBuilder()
+
+        if (firstName == null && lastName == null) {
+            return null
+        }
+
+        if (firstName != null && firstName.trim() != "") {
+            result.append(firstName.get(0).toUpperCase())
+        }
+
+        if (lastName != null && lastName.trim() != "") {
+            result.append(lastName.get(0).toUpperCase())
+        }
+
+        return when {
+            result.toString() == "" -> null
+            else -> result.toString()
+        }
     }
 }
