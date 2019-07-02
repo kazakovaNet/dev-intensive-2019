@@ -9,9 +9,9 @@ object Utils {
             null, "" -> null to null
             else -> {
                 val parts: List<String>? = fullName.split(delimiters = *arrayOf(" "))
-
-                val firstName: String? = parts?.getOrNull(index = 0)
-                val lastName: String? = parts?.getOrNull(index = 1)
+                val words = parts?.filter { it.isNotEmpty() }
+                val firstName: String? = words?.getOrNull(index = 0)
+                val lastName: String? = words?.getOrNull(index = 1)
 
                 firstName to lastName
             }
@@ -85,7 +85,7 @@ object Utils {
         return result.toString()
     }
 
-    fun initials(firstName: String?, lastName: String?): String? {
+    fun toInitials(firstName: String?, lastName: String?): String? {
         val result = StringBuilder()
 
         if (firstName == null && lastName == null) {
