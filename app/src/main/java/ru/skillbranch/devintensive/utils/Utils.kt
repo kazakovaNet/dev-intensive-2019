@@ -57,21 +57,19 @@ object Utils {
 
         val result = StringBuilder()
         for (char in payload) {
-            val s = "$char"
-
-            if (s == " ") {
+            if (char.toString() == " ") {
                 result.append(divider)
                 continue
             }
 
-            val sToLowerCase = s.toLowerCase()
+            val sToLowerCase = char.toString().toLowerCase()
 
-            if (sToLowerCase in "a".."z") {
-                result.append(s) // английские символы переносятся как есть
+            if (sToLowerCase !in transMap) {
+                result.append(char.toString()) // различные символы и английские буквы переносятся как есть
                 continue
             }
 
-            if (transMap[sToLowerCase] != null && transMap[s] == null) { // сохранять заглавные буквы
+            if (transMap[sToLowerCase] != null && transMap[char.toString()] == null) { // сохранять заглавные буквы
                 result.append(transMap[sToLowerCase]?.get(0)?.toUpperCase())
 
                 if (transMap[sToLowerCase]?.length == 2) { // второй символ в транслитерации делать прописным

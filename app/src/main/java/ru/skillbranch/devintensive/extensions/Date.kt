@@ -37,10 +37,10 @@ fun Date.add(value: Int, units: TimeUnits): Date {
 fun Date.humanizeDiff(date: Date = Date()): String {
     val timeDiff = this.time - date.time
 
-    val timeDiffInSeconds = abs(timeDiff / SECOND)
-    val timeDiffInMinutes = abs(timeDiff / MINUTE)
-    val timeDiffInHours = abs(timeDiff / HOUR)
-    val timeDiffInDays = abs(timeDiff / DAY)
+    val timeDiffInSeconds = abs(String.format("%.3f", (timeDiff.toDouble() / SECOND.toDouble())).toDouble()).toInt()
+    val timeDiffInMinutes = abs(String.format("%.3f", (timeDiff.toDouble() / MINUTE.toDouble())).toDouble()).toInt()
+    val timeDiffInHours = abs(String.format("%.3f", (timeDiff.toDouble() / HOUR.toDouble())).toDouble()).toInt()
+    val timeDiffInDays = abs(String.format("%.3f", (timeDiff.toDouble() / DAY.toDouble())).toDouble()).toInt()
 
     val isFuture = timeDiff > 0
 
@@ -50,38 +50,52 @@ fun Date.humanizeDiff(date: Date = Date()): String {
         timeDiffInSeconds in 0..45 -> "через несколько секунд"
         timeDiffInSeconds in 45..75 && !isFuture -> "минуту назад"
         timeDiffInSeconds in 45..75 -> "через минуту"
-        timeDiffInSeconds > 75 && timeDiffInMinutes < 45 -> getTimeStr(timeDiffInMinutes, TimeUnits.MINUTE, isFuture)
+        timeDiffInSeconds > 75 && timeDiffInMinutes <= 45 -> getTimeStr(timeDiffInMinutes, TimeUnits.MINUTE, isFuture)
         timeDiffInMinutes in 45..75 && !isFuture -> "час назад"
         timeDiffInMinutes in 45..75 -> "через час"
-        timeDiffInMinutes > 75 && timeDiffInHours < 22 -> getTimeStr(timeDiffInHours, TimeUnits.HOUR, isFuture)
+        timeDiffInMinutes > 75 && timeDiffInHours <= 22 -> getTimeStr(timeDiffInHours, TimeUnits.HOUR, isFuture)
         timeDiffInHours in 22..26 && !isFuture -> "день назад"
         timeDiffInHours in 22..26 -> "через день"
-        timeDiffInHours > 26 && timeDiffInDays < 360 -> getTimeStr(timeDiffInDays, TimeUnits.DAY, isFuture)
+        timeDiffInHours > 26 && timeDiffInDays <= 360 -> getTimeStr(timeDiffInDays, TimeUnits.DAY, isFuture)
         timeDiffInDays > 360 && !isFuture -> "более года назад"
-        timeDiffInDays > 360 -> "более чем через год"
-        else -> "неизвестно"
+        else -> "более чем через год"
     }
 }
 
-fun getAddition(num: Long, units: TimeUnits): String {
-    val toInt = (num % 10).toInt()
+fun getAddition(num: Int, units: TimeUnits): String {
+    var category = ""
 
-    fun minuteAddition(): String = when (toInt) {
-        1 -> "минуту"
-        in 2..4 -> "минуты"
-        else -> "минут"
+    if (num % 10 == 1 && num % 100 != 11) {
+        category = "one"
     }
 
-    fun hourAddition(): String = when (toInt) {
-        1 -> "час"
-        in 2..4 -> "часа"
-        else -> "часов"
+    if (num % 10 in 2..4 && num % 100 !in 12..14) {
+        category = "few"
     }
 
-    fun dayAddition(): String = when (toInt) {
-        1 -> "день"
-        in 2..4 -> "дня"
-        else -> "дней"
+    if (num % 10 == 0 || num % 10 in 5..9 || num % 100 in 11..14) {
+        category = "many"
+    }
+
+    fun minuteAddition(): String = when (category) {
+        "one" -> "минуту"
+        "few" -> "минуты"
+        "many" -> "минут"
+        else -> ""
+    }
+
+    fun hourAddition(): String = when (category) {
+        "one" -> "час"
+        "few" -> "часа"
+        "many" -> "часов"
+        else -> ""
+    }
+
+    fun dayAddition(): String = when (category) {
+        "one" -> "день"
+        "few" -> "дня"
+        "many" -> "дней"
+        else -> ""
     }
 
     return when (units) {
@@ -92,7 +106,7 @@ fun getAddition(num: Long, units: TimeUnits): String {
     }.toString()
 }
 
-fun getTimeStr(num: Long, units: TimeUnits, isFuture: Boolean): String {
+fun getTimeStr(num: Int, units: TimeUnits, isFuture: Boolean): String {
     val addition = getAddition(num, units)
 
     return when {
