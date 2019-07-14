@@ -118,3 +118,26 @@ fun getTimeStr(num: Int, units: TimeUnits, isFuture: Boolean): String {
 enum class TimeUnits {
     SECOND, MINUTE, HOUR, DAY
 }
+
+fun TimeUnits.plural(value: Int): String {
+
+    this.name
+
+    fun getCategoryPlural(num: Int): String? {
+        if (num % 10 == 1 && num % 100 != 11) {
+            return "one"
+        }
+
+        if (num % 10 in 2..4 && num % 100 !in 12..14) {
+            return "few"
+        }
+
+        if (num % 10 == 0 || num % 10 in 5..9 || num % 100 in 11..14) {
+            return "many"
+        }
+
+        return null
+    }
+
+    return ""
+}
