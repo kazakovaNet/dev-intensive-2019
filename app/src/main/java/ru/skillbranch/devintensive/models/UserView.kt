@@ -1,4 +1,4 @@
-package ru.skillbranch.devintensive.utils
+package ru.skillbranch.devintensive.models
 
 /**
  * Created by nkazakova on 2019-06-30.
