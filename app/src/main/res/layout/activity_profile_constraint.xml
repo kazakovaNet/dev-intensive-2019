@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView"
-            style="@style/Profile.Header.Nickname"
+            style="@style/Profile.Header.NickName"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
             android:layout_marginTop="12dp"
             app:layout_constraintEnd_toEndOf="@+id/imageView2"
